@@ -1,11 +1,30 @@
-# Backend: правила роли
+# Backend / Core / Optimization
 
-- **Ответственный:** Роллан
+- **Ответственный:** Сарсембаев Ролан
 - **Область:** `backend/`
 
-- Владеть серверной логикой, API, хранением данных, backend-тестами и миграциями.
-- Сохранять обратную совместимость API либо заранее согласовать несовместимое изменение.
-- Документировать изменения API, схемы БД, общих типов и миграций в `docs/DECISIONS.md`.
-- Миграции должны быть повторяемыми; не изменять уже применённую миграцию без согласования.
-- Изменения, влияющие на frontend или shared-зону, требуют записи в handoff и согласования.
-- После появления backend-стека добавить сюда точные команды lint, typecheck, tests и build.
+## Ownership
+- backend/core;
+- domain adapter;
+- evaluator/simulation;
+- controller interface;
+- optimization / GA;
+- metrics/scoring;
+- API/data contracts;
+- backend integration.
+
+## Rules
+- Перед работой прочитать корневой `AGENTS.md`, `docs/CASE.md`, `docs/API_CONTRACT.md`, `docs/TASKS.md` и актуальный Handoff.
+- Сначала фиксировать API/data contract, затем реализацию.
+- Не менять shared contract молча.
+- Любое изменение request/response/types/errors сначала отражать в `docs/API_CONTRACT.md`.
+- Изменения, влияющие на frontend/testing, обязательно указывать в Handoff.
+- Не коммитить secrets.
+- После появления реального backend-стека добавить точные команды lint/typecheck/tests/build.
+
+## Done
+Перед завершением:
+1. запустить доступные проверки;
+2. commit + push своей ветки;
+3. указать branch, commit SHA, тесты и contract changes;
+4. обновить Handoff/Issue.
