@@ -1,29 +1,171 @@
-# Общие правила работы Codex
+# AGENTS.md
 
-Эти правила действуют во всём репозитории. Вложенный `AGENTS.md` дополняет их и не отменяет, если это не указано явно.
+## Project
+HackAlem AI team repository.
 
-## Перед началом
+This repository is the single source of truth for code.
+The project documentation in `/docs` is the shared source of truth for:
+- official case and requirements;
+- architecture and contracts;
+- team roles;
+- workflow and handoffs;
+- demo/pitch preparation.
 
-1. Изучить структуру проекта, корневой и локальный `AGENTS.md`.
-2. Проверить текущую ветку, `git status` и существующие изменения.
-3. Выполнить `git pull` только если это безопасно и разрешено пользователем.
-4. Прочитать `docs/TASKS.md`, `docs/DECISIONS.md` и `docs/HANDOFF.md`, а также недавние изменения по задаче.
-5. Проверить зависимости от других участников.
-6. Обозначить в `docs/TASKS.md` взятую задачу и область изменений. Не брать задачу `In Progress`, если её уже выполняет другой участник.
+## Mandatory startup procedure
+Before changing code, every Codex agent MUST:
 
-## Во время работы
+1. Pull/fetch the latest repository state.
+2. Read this `AGENTS.md`.
+3. Read `docs/CASE.md`.
+4. Read `docs/TEAM.md`.
+5. Read the assigned GitHub Issue and/or `docs/TASKS.md`.
+6. Read `docs/DECISIONS.md` and the latest relevant handoff in `docs/HANDOFF.md` or the Issue/PR thread.
+7. Check `docs/API_CONTRACT.md` and `docs/ARCHITECTURE.md` for current interfaces.
+8. Check `docs/WORKLOG.md` for recent changes when relevant.
+9. Confirm which files/modules belong to the task.
+10. Do not start major implementation if the official case or acceptance criteria are unclear.
 
-- Соблюдать границы роли и не менять чужую зону без необходимости.
-- Делать минимальные целевые изменения и сохранять совместимость.
-- Не удалять, не перезаписывать и не откатывать чужие изменения.
-- Не менять общие API, типы, схему данных или архитектуру молча: записать решение и сообщить затронутым участникам.
-- Явно фиксировать блокирующие зависимости.
+## Team roles
 
-## Перед завершением
+### Әділ Қайратов — Frontend / Visualization
+Primary ownership:
+- frontend;
+- UI/UX;
+- dashboard;
+- charts and visualization;
+- Baseline vs Optimized view;
+- user/demo flow;
+- frontend integration.
 
-1. Просмотреть полный `git diff` и убрать случайные изменения.
-2. Запустить доступные тесты, lint, typecheck, build и нужные интеграционные проверки.
-3. Не заявлять об успехе проверок, которые не запускались; явно указать ошибки и риски.
-4. Обновить статус задачи, `docs/WORKLOG.md` и компактный `docs/HANDOFF.md`.
-5. Codex разрешено самостоятельно выполнять `git add`, `git commit` и обычный `git push` в этом репозитории после доступных проверок.
-6. `force-push` и merge запрещены без отдельного явного разрешения пользователя.
+Do not change backend/core contracts silently.
+
+### Сарсембаев Ролан — Backend / Core / Optimization
+Primary ownership:
+- backend/core;
+- domain adapter;
+- evaluator/simulation;
+- controller interface;
+- optimization / GA;
+- metrics/scoring;
+- API/data contracts;
+- backend integration.
+
+Any contract change MUST be documented before dependent work continues.
+
+### Асанали — Testing / Integration / Demo
+Primary ownership:
+- tests;
+- validation;
+- integration;
+- end-to-end flow;
+- acceptance criteria;
+- smoke checks;
+- demo readiness;
+- pitch evidence/materials.
+
+## Branch policy
+One task = one short-lived branch.
+
+Naming:
+- `adil/<task>`
+- `rollan/<task>`
+- `asanali/<task>`
+
+Rules:
+- never force-push `main`;
+- pull/fetch before starting;
+- do not overwrite another member's active work;
+- keep commits small and meaningful;
+- push after meaningful milestones and at required hackathon checkpoints;
+- keep `main` runnable whenever possible.
+
+## Scope protection
+Do NOT:
+- modify unrelated modules;
+- refactor working code without task justification;
+- change stable interfaces without documenting it;
+- delete files or major logic without explicit approval;
+- commit secrets, API keys, tokens, credentials, or real `.env` values;
+- invent requirements not present in the official case;
+- optimize for metrics unrelated to the official case.
+
+## Architecture principle
+Keep these concerns separated where practical:
+- domain/case adapter;
+- optimization/core;
+- evaluator/environment;
+- API/contracts;
+- frontend/visualization;
+- tests/integration.
+
+Traffic optimization is a prepared sandbox, not automatically the final hackathon problem.
+
+## Contract-first rule
+Frontend and backend should not wait for each other.
+
+Before parallel work, define:
+- function/endpoint name;
+- request shape;
+- response shape;
+- types;
+- error cases;
+- config/env names.
+
+Frontend may use mocks that exactly match the agreed contract.
+
+## Development rule
+Prefer the smallest end-to-end vertical slice:
+
+`input -> core/backend -> result -> frontend display`
+
+Get this working early, then improve it.
+
+Do not build all frontend first and all backend later.
+
+## Testing rule
+Before marking a task complete:
+- run relevant tests;
+- run a smoke check;
+- verify the changed path actually works;
+- verify no secrets are tracked;
+- verify contract compatibility.
+
+If tests cannot run, explicitly document why.
+
+## Definition of Done
+A task is DONE only when:
+
+1. Code exists in the official team GitHub repository.
+2. Relevant code runs.
+3. Tests/smoke-check pass, or failures are documented.
+4. Branch is pushed.
+5. Commit SHA is known.
+6. PR/link is recorded if used.
+7. GitHub Issue status is updated.
+8. Handoff is written.
+9. Handoff contains:
+   - what changed;
+   - changed files/modules;
+   - branch;
+   - commit SHA;
+   - PR/link;
+   - tests/checks;
+   - blockers;
+   - next step;
+   - API/interface changes relevant to others.
+
+## Hackathon-specific rule
+All competition implementation must follow the official HackAlem rules and use the platform-created team GitHub repository.
+
+If an official HackAlem rule conflicts with this file, the official rule wins.
+
+## Before final submission
+- `main` is runnable;
+- README setup/run steps are correct;
+- no secrets are tracked;
+- official requirements are satisfied;
+- baseline vs optimized evidence exists where applicable;
+- demo is reproducible;
+- final commit is pushed;
+- docs are current;
+- backup screenshots/video are ready if needed.
