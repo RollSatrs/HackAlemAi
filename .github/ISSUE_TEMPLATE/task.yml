@@ -1,0 +1,48 @@
+name: Team Task
+description: HackAlem team implementation task
+title: "[Task] "
+labels: []
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Goal
+      description: What concrete result is required?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Frontend / Visualization
+        - Backend / Core / Optimization
+        - Testing / Integration
+        - Demo / Presentation
+        - Infrastructure
+        - Organization
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: What must be true for this task to be done?
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies / Contract
+      description: Which API/data contract or other task does this depend on?
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes / Constraints
