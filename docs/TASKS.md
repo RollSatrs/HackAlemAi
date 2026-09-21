@@ -14,6 +14,7 @@
 | PRE-004 | Провести dry run: 3 ветки → commits → push → merge → handoff | Асанали | Testing / Integration | Ready | Critical | PRE-001, PRE-002 | — |
 | PRE-005 | Проверить шаблон API/data contract | Ролан | Backend / Contract | Ready | High | PRE-003 | — |
 | PRE-006 | Проверить Telegram/OpenAI/Codex доступы и backup demo plan | Әділ | Infrastructure | Ready | Critical | — | — |
+| PRE-007 | Свести правила в единый регламент Codex | Ролан | Documentation | Done | High | — | `main` |
 | CASE-001 | На старте заполнить `docs/CASE.md` по официальному кейсу | Әділ | Organization | Blocked | Critical | Официальный кейс | — |
 | CASE-002 | После CASE-001 зафиксировать реальный API/data contract | Ролан | Backend / Contract | Blocked | Critical | CASE-001 | — |
 | CASE-003 | После CASE-001 подготовить acceptance/integration plan | Асанали | Testing / Integration | Blocked | Critical | CASE-001 | — |
