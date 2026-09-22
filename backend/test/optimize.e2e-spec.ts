@@ -1,7 +1,8 @@
 import { Test } from "@nestjs/testing";
-import { INestApplication, ValidationPipe } from "@nestjs/common";
+import { INestApplication } from "@nestjs/common";
 import request from "supertest";
 import { AppModule } from "../src/api/app.module";
+import { createValidationPipe } from "../src/main";
 
 const hasDb = !!process.env.DATABASE_URL;
 const describeIfDb = hasDb ? describe : describe.skip;
@@ -12,7 +13,7 @@ describeIfDb("POST /optimize (e2e)", () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile();
     app = moduleRef.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+    app.useGlobalPipes(createValidationPipe());
     await app.init();
   });
 
@@ -49,6 +50,6 @@ describeIfDb("POST /optimize (e2e)", () => {
       .send({ scenario: { seed: 1, duration_sec: 100, intersections: [] } })
       .expect(400);
 
-    expect(response.body.message.error.code).toBe("INVALID_INPUT");
+    expect(response.body.error.code).toBe("INVALID_INPUT");
   });
 });
