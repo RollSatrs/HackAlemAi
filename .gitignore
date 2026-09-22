@@ -31,3 +31,6 @@ temp/
 
 # Local AI/tool state
 .codex/
+
+# TypeScript
+*.tsbuildinfo
