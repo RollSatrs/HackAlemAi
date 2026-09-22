@@ -23,8 +23,17 @@
     "@types/jest": "^29.5.0"
   },
   "jest": {
-    "preset": "ts-jest",
     "testEnvironment": "node",
-    "rootDir": "src"
+    "rootDir": "src",
+    "transform": {
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "tsconfig": {
+            "jsx": "react-jsx"
+          }
+        }
+      ]
+    }
   }
 }
