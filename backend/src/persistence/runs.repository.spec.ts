@@ -1,29 +1,54 @@
+import { randomUUID } from "crypto";
 import { RunsRepository } from "./runs.repository";
 import { ScenarioInput } from "@sandbox/shared";
 import { OptimizeResult } from "../core/optimizer.service";
+import { runs, candidates } from "./schema";
 
-function makeFakePrisma() {
-  const runs: any[] = [];
-  const candidates: any[] = [];
+/**
+ * Minimal hand-rolled stand-in for the Drizzle fluent query builder,
+ * just enough surface area to drive RunsRepository's real code paths
+ * (saveRun / listRuns) without a live Postgres connection:
+ *   - insert(table).values(data).returning()
+ *   - select().from(table)
+ *   - select().from(table).where(condition)   (not exercised by these
+ *     two tests, but kept for shape-completeness / future getRun tests)
+ */
+function makeFakeDb() {
+  const runRows: any[] = [];
+  const candidateRows: any[] = [];
+
+  function tableFor(table: any) {
+    return table === runs ? runRows : candidateRows;
+  }
+
   return {
-    run: {
-      create: jest.fn(async ({ data }: any) => {
-        const record = { id: "run-1", createdAt: new Date(), ...data };
-        runs.push(record);
-        return record;
+    insert: jest.fn((table: any) => ({
+      values: jest.fn((data: any) => {
+        const rowsToInsert = Array.isArray(data) ? data : [data];
+        const inserted = rowsToInsert.map((row) => ({
+          id: randomUUID(),
+          createdAt: new Date(),
+          ...row,
+        }));
+        tableFor(table).push(...inserted);
+        return {
+          returning: jest.fn(async () => inserted),
+        };
       }),
-      findUnique: jest.fn(async ({ where }: any) =>
-        runs.find((r) => r.id === where.id) ?? null,
-      ),
-      findMany: jest.fn(async () => runs),
-    },
-    candidate: {
-      createMany: jest.fn(async ({ data }: any) => {
-        candidates.push(...data);
-        return { count: data.length };
+    })),
+    select: jest.fn(() => ({
+      from: jest.fn((table: any) => {
+        const rows = tableFor(table);
+        const result: any = Promise.resolve(rows);
+        result.where = jest.fn(async () => rows);
+        return result;
       }),
-    },
+    })),
   };
+}
+
+function makeFakeDbService() {
+  return { db: makeFakeDb() };
 }
 
 const scenario: ScenarioInput = {
@@ -48,17 +73,17 @@ const result: OptimizeResult = {
 
 describe("RunsRepository", () => {
   it("saves a run and returns its id", async () => {
-    const prisma = makeFakePrisma();
-    const repo = new RunsRepository(prisma as any);
+    const dbService = makeFakeDbService();
+    const repo = new RunsRepository(dbService as any);
     const saved = await repo.saveRun(scenario, {}, result);
     expect(saved.run_id).toBeDefined();
-    expect(prisma.run.create).toHaveBeenCalledTimes(1);
-    expect(prisma.candidate.createMany).toHaveBeenCalledTimes(1);
+    expect(dbService.db.insert).toHaveBeenCalledWith(runs);
+    expect(dbService.db.insert).toHaveBeenCalledWith(candidates);
   });
 
   it("lists runs after saving", async () => {
-    const prisma = makeFakePrisma();
-    const repo = new RunsRepository(prisma as any);
+    const dbService = makeFakeDbService();
+    const repo = new RunsRepository(dbService as any);
     await repo.saveRun(scenario, {}, result);
     const list = await repo.listRuns();
     expect(list).toHaveLength(1);

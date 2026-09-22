@@ -2,10 +2,10 @@ import { Module } from "@nestjs/common";
 import { OptimizeController } from "./optimize.controller";
 import { RunsController } from "./runs.controller";
 import { RunsRepository } from "../persistence/runs.repository";
-import { PrismaService } from "../persistence/prisma.service";
+import { DbService } from "../persistence/db.service";
 
 @Module({
   controllers: [OptimizeController, RunsController],
-  providers: [RunsRepository, PrismaService],
+  providers: [RunsRepository, DbService],
 })
 export class AppModule {}
