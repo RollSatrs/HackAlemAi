@@ -3,13 +3,20 @@
   "version": "0.1.0",
   "scripts": {
     "test": "jest",
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "generate": "prisma generate --schema=prisma/schema.prisma",
+    "postinstall": "npm run generate"
   },
   "dependencies": {
     "@sandbox/shared": "*",
     "@nestjs/common": "^10.3.0",
+    "@nestjs/core": "^10.3.0",
+    "@nestjs/platform-express": "^10.3.0",
     "@prisma/client": "^5.14.0",
-    "reflect-metadata": "^0.2.0"
+    "class-validator": "^0.14.0",
+    "class-transformer": "^0.5.1",
+    "reflect-metadata": "^0.2.0",
+    "rxjs": "^7.8.0"
   },
   "devDependencies": {
     "typescript": "^5.4.0",
@@ -17,11 +24,17 @@
     "ts-jest": "^29.1.0",
     "@types/jest": "^29.5.0",
     "@types/node": "^20.0.0",
-    "prisma": "^5.14.0"
+    "prisma": "^5.14.0",
+    "@nestjs/testing": "^10.3.0",
+    "supertest": "^6.3.0",
+    "@types/supertest": "^6.0.0"
   },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
-    "rootDir": "src"
+    "rootDir": ".",
+    "roots": ["<rootDir>/src", "<rootDir>/test"],
+    "testMatch": ["**/?(*.)+(spec|test).[tj]s?(x)", "**/*.e2e-spec.ts"],
+    "setupFiles": ["reflect-metadata"]
   }
 }
