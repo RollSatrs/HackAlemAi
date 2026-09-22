@@ -23,12 +23,12 @@ Baseline: светофоры на перекрёстках работают по
 Монорепо:
 
 ```
-backend/   NestJS + TypeScript + PostgreSQL (Prisma)
+backend/   NestJS + TypeScript + PostgreSQL (Drizzle ORM)
   domain/     Domain Adapter — типы State/Action/Constraint, построение сценария и baseline-политики
   evaluator/  чистая функция simulate(policy, scenario, seed) -> Metrics, без знания об HTTP/БД
   core/       optimize(scenario) -> {baseline, best, history}; генерация кандидатов, вызов evaluator, scoring, selection
   api/        REST-контроллеры (validate DTO -> domain -> core -> persist -> response)
-  persistence/ Prisma-схема: runs, candidates (top-K для графика сходимости), policies
+  persistence/ Drizzle-схема (drizzle-orm + pg): runs, candidates (top-K для графика сходимости)
 frontend/  Next.js + TypeScript
   — форма сценария, вызов /optimize, baseline vs optimized (recharts), история запусков (/runs)
 shared/    TS-типы контракта, общие для backend/frontend (синхронно с docs/API_CONTRACT.md)

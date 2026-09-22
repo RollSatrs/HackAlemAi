@@ -143,7 +143,7 @@ GET /runs/:id     -> полная запись запуска (включая to
 ```
 
 ### Stack (sandbox dry-run)
-- Backend: NestJS (TypeScript) + PostgreSQL (Prisma).
+- Backend: NestJS (TypeScript) + PostgreSQL (Drizzle ORM).
 - Frontend: Next.js (TypeScript).
 - Owners: как в разделе "Owners" выше.
 

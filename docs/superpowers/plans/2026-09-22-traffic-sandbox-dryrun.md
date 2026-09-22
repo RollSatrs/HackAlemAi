@@ -12,7 +12,7 @@
 
 ## Global Constraints
 
-- Backend: NestJS (TypeScript), PostgreSQL via Prisma. (spec §3, §5)
+- Backend: NestJS (TypeScript), PostgreSQL via Drizzle ORM. (spec §3, §5 — amended from Prisma to Drizzle after Task 7; see SDD ledger "Mid-flight scope change")
 - Frontend: Next.js (TypeScript). (spec §3)
 - Intersections per scenario: 2–4. (spec §9)
 - Policy bounds: `ns_green_sec`, `ew_green_sec` ∈ [10, 60]; `phase_offset_sec` ∈ [0, cycle_length). (spec §2)
