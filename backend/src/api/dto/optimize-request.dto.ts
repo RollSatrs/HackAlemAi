@@ -34,6 +34,7 @@ export class ScenarioInputDto {
 
   @IsInt()
   @Min(1)
+  @Max(3600)
   duration_sec!: number;
 
   @IsArray()
@@ -48,6 +49,7 @@ export class OptimizeOptionsDto {
   @IsOptional()
   @IsInt()
   @Min(0)
+  @Max(500)
   candidates?: number;
 
   @IsOptional()

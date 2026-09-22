@@ -3,6 +3,7 @@
   "private": true,
   "workspaces": ["shared", "backend", "frontend"],
   "scripts": {
+    "pretest": "npm run build -w shared",
     "test": "npm run test --workspaces --if-present",
     "build": "npm run build --workspaces --if-present"
   }

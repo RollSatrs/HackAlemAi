@@ -58,6 +58,7 @@
 - Собран traffic sandbox dry-run сквозной путь: domain adapter (валидация сценария, baseline policy, bounds), evaluator (симуляция очередей по политике), core (кандидатный поиск/оптимизация, scoring), API (NestJS controllers `/optimize`, `/runs`), persistence (Drizzle ORM поверх Postgres — заменил Prisma в середине разработки по явному запросу пользователя, см. `.superpowers/sdd/2026-09-22-traffic-sandbox-dryrun/progress.md`, запись "Mid-flight scope change"), frontend (Next.js форма сценария, график сравнения baseline/optimized, история запусков `/runs`, typed API client с mock-режимом, точно совпадающим с `docs/API_CONTRACT.md`).
 - Добавлены `backend/.env.example` (`DATABASE_URL`, `PORT`), `frontend/.env.example` (`NEXT_PUBLIC_BACKEND_URL`, `NEXT_PUBLIC_USE_MOCK`), обновлён корневой `.env.example`.
 - Выполнен ручной smoke-check с реальным локальным PostgreSQL (см. "Tests / checks" и "Проблемы / блокеры").
+- Добавлен `backend/drizzle.config.ts` и npm-скрипт `npm run db:push -w backend` (обёртка над `drizzle-kit push:pg --config=./drizzle.config.ts`, читает `DATABASE_URL` из env) — теперь схему `runs`/`candidates` можно создать в свежем clone командой, без ручного набора флагов из прозы ниже.
 
 **Изменённые файлы/модули**
 - `.env.example`, `backend/.env.example`, `frontend/.env.example`, `docs/HANDOFF.md`, `docs/WORKLOG.md`

@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { ScenarioInput, OptimizeOptions, RunSummary } from "@sandbox/shared";
 import { OptimizeResult } from "../core/optimizer.service";
 import { DbService } from "./db.service";
@@ -66,6 +66,19 @@ export class RunsRepository {
       .where(eq(runs.id, runId));
     const run = rows[0];
     if (!run) return null;
+
+    const candidateRows = await this.dbService.db
+      .select()
+      .from(candidates)
+      .where(eq(candidates.runId, runId))
+      .orderBy(candidates.rank);
+
+    const topCandidates = candidateRows.map((candidate: any) => ({
+      policy: candidate.policy,
+      metrics: candidate.metrics,
+      fitness: candidate.fitness,
+    }));
+
     return {
       run_id: run.id,
       created_at: run.createdAt,
@@ -75,12 +88,16 @@ export class RunsRepository {
       optimized: run.optimized as any,
       improvement: run.improvement as any,
       bestPolicy: run.bestPolicy as any,
-      topCandidates: [],
+      topCandidates,
     };
   }
 
   async listRuns(): Promise<RunSummary[]> {
-    const rows = await this.dbService.db.select().from(runs);
+    const rows = await this.dbService.db
+      .select()
+      .from(runs)
+      .orderBy(desc(runs.createdAt))
+      .limit(50);
     return rows.map((run: any) => ({
       run_id: run.id,
       created_at: run.createdAt.toISOString(),
