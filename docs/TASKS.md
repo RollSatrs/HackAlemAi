@@ -18,6 +18,7 @@
 | CASE-001 | На старте заполнить `docs/CASE.md` по официальному кейсу | Әділ | Organization | Blocked | Critical | Официальный кейс | — |
 | CASE-002 | После CASE-001 зафиксировать реальный API/data contract | Ролан | Backend / Contract | Blocked | Critical | CASE-001 | — |
 | CASE-003 | После CASE-001 подготовить acceptance/integration plan | Асанали | Testing / Integration | Blocked | Critical | CASE-001 | — |
+| SBX-001 | Traffic sandbox dry-run: обкатать архитектуру EVOLVE AI (не финальный кейс) | Ролан | Backend / Frontend / Contract | In Progress | High | PRE-005 | `rollan/traffic-sandbox-dryrun` |
 
 ## После выдачи кейса
 Не продолжать заранее подготовленный traffic-sandbox автоматически. Сначала:
