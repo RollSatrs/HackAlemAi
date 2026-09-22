@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Run {
+  id              String   @id @default(uuid())
+  createdAt       DateTime @default(now())
+  scenario        Json
+  options         Json
+  baseline        Json
+  optimized       Json
+  improvement     Json
+  bestPolicy      Json
+  candidates      Candidate[]
+}
+
+model Candidate {
+  id            String   @id @default(uuid())
+  runId         String
+  run           Run      @relation(fields: [runId], references: [id])
+  policy        Json
+  metrics       Json
+  fitness       Float
+  rank          Int
+}
