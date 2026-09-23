@@ -1,5 +1,8 @@
 # HackAlem AI — Team Workspace
 
+> **Официальный конкурсный repository:** [BAITC-Hacks/hack-7e4788ab-evomind](https://github.com/BAITC-Hacks/hack-7e4788ab-evomind)  
+> **Этот repository:** подготовка, шаблоны и командный workflow. После старта конкурсная реализация ведётся в официальном repo. См. [docs/OFFICIAL_REPO.md](./docs/OFFICIAL_REPO.md).
+
 Shared repository for the HackAlem AI team.
 
 ## Team
